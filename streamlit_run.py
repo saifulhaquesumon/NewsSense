@@ -19,7 +19,7 @@ MODEL_NAME = os.getenv("MODEL_NAME")
 LOGFIRE_TOKEN = os.getenv("LOGFIRE_TOKEN") 
 
 logfire.configure(
-    send_to_logfire=False, # Set to True to send to the Logfire service
+    send_to_logfire=True, # Set to True to send to the Logfire service
     token=LOGFIRE_TOKEN,  # Your Logfire token
 )
 

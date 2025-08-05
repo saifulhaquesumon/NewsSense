@@ -30,7 +30,7 @@ LOGFIRE_TOKEN = os.getenv("LOGFIRE_TOKEN")
 # You can get a free Logfire account to view detailed logs.
 # For this example, we'll log to the console.
 logfire.configure(
-    send_to_logfire=False, # Set to True to send to the Logfire service
+    send_to_logfire=True, # Set to True to send to the Logfire service
     token=LOGFIRE_TOKEN,  # Your Logfire token    
 )
 
@@ -55,6 +55,18 @@ conversation_agent = Agent(
     instructions="""
     You are a news sense assistant. Your role is to identify the right specialist agent to hand off to.
     You can hand off to specialist agents for specific tasks like Fact Checker, News Summarizer or Trending News Specialist.
+
+    When a user asks a question, analyze the query and determine which specialist agent is best suited to handle it.
+    If the query is about trending news, hand off to the Trending News Specialist.
+    If the query is about fact-checking,user confused about news, hand off to the Fact Checker.
+    If the query is about summarizing an article, hand off to the News Summarizer.
+    if the query is look like a rumor or misinformation, hand off to the Fact Checker.
+    if the query is about a specific topic, hand off to the Trending News Specialist.
+    if the query is look like partnering with a company or aquisition of a company, hand off to the Fact Checker.
+    Example queries:
+    - "What are the latest trends in AI?" - hand off to Trending News Specialist
+    - "Is the claim that AI will replace jobs true?" - hand off to Fact Checker
+    - "Can you summarize the latest article on climate change. A long text will be supplied by user?" - hand off to News Summarizer
 
     Don't try to answer the user's question directly. Instead, analyze the query and determine which specialist agent is best suited to handle it.
     """,

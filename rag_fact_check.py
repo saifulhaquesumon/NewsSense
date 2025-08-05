@@ -25,7 +25,7 @@ LOGFIRE_TOKEN = os.getenv("LOGFIRE_TOKEN")
 # You can get a free Logfire account to view detailed logs.
 # For this example, we'll log to the console.
 logfire.configure(
-    send_to_logfire=False, # Set to True to send to the Logfire service
+    send_to_logfire=True, # Set to True to send to the Logfire service
     token=LOGFIRE_TOKEN,  # Your Logfire token
 )
 
@@ -147,11 +147,18 @@ def fact_check_claim(params: FactCheckInput) -> dict:
 
 
 fact_check_agent = Agent(
-    name="Fact Check Agent",
-    handoff_description="Fact-checks claims and provides evidence-based responses.",
+    name="Fact Check Specialist",
+    handoff_description="Fact-checks  claims and provides evidence-based responses.",
     instructions="""
-    This agent will check the validity of claims made in news articles.
-
+    You are a fact-checking agent. 
+    If user asks a question that looks like a rumor or misinformation, you will check the validity of the claim.
+    This agent will check the validity of claims asked by user.
+    If user asks a question that looks like a claim, you will check the validity of the claim.
+    This agent will check the validity of claims asked by user.
+    It will use a local knowledge base stored in ChromaDB to verify claims.
+    If the claim is found, it will return the verdict, summary, and sources.
+    If the claim is not found, it will return a message indicating that the claim could not be verified.
+    
     You will use a local knowledge base stored in ChromaDB to verify claims.
     A tools given to you. If the claim is found, return the verdict, summary, and sources.
 

@@ -1,6 +1,41 @@
 🧠 AI News Intelligence Agent – “NewsSense”
 NewsSense is a multi-agent system designed to help users track, verify, and summarize breaking news from across the web. It uses a controller agent to understand user intent and route tasks to specialized agents for efficient handling.
 
+
+
+project structure
+- streamlit_run.py --Run this file, 
+
+This program written in  VSCode.
+## Setup
+
+1. Install the required dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+2. Create a `.env` file with your OpenAI API key:
+
+
+API_KEY= "your open ai key" 
+BASE_URL= "https://models.github.ai/inference"
+MODEL_NAME= "openai/gpt-4.1-nano"
+LOGFIRE_TOKEN="your token here"
+TAVILY_API_KEY="your key here" #https://app.tavily.com/home
+EMBEDDING_MODEL="all-MiniLM-L6-v2"
+
+run the streamlit_ui.py file
+
+
+if you don't want to send to logfire
+
+logfire.configure(
+    send_to_logfire=False, # Set to True to send to the Logfire service
+    token=LOGFIRE_TOKEN,  # Your Logfire token    
+)
+
+
 🗺️ System Diagram & Flow
 The user interacts with the Conversation Agent, which acts as a controller. Based on the user's query, it decides which specialist agent to invoke.
 
@@ -63,62 +98,48 @@ Modular Code: The code is organized into logical blocks for configuration, schem
 Expected Output and Logfire Logs
 ===================================================================
 
-When you run the code above (after adding your API key), you will see output similar to this. The logfire console output will be interleaved with the print statements.
+User Question: Is open AI partnering with Apple?
+Output : Multiple tech news outlets have reported on ongoing discussions between Apple and OpenAI to integrate generative AI features into iOS. However, neither company has issued an official confirmation. Sources suggest a deal is plausible but not finalized.
 
---- Running Flow 1: Trending News ---
-👤 User Query: 'What's trending in AI today?'
-logfire: Instrument "Conversation Agent Running"
-logfire: Received user query: What's trending in AI today?
-logfire: Model decided to call a tool: get_trending_news
-⚙️ Tool: Fetching trending news for topic: ai
-logfire: Instrument "get_trending_news tool called"
-✅ Agent Response:
-{
-  "status": "success",
-  "headlines": [
-    "Meta releases Llama 3, claiming state-of-the-art performance.",
-    "Apple is in talks to integrate Google's Gemini into the iPhone.",
-    "Elon Musk's xAI announces major updates for its Grok chatbot.",
-    "Venture capital funding for AI startups reaches a new peak in Q1 2025."
-  ]
-}
-logfire: Tool get_trending_news executed successfully.
+Logfire Log: 
+https://logfire-us.pydantic.dev/shared-trace/211f7868-d46e-4bce-b926-5bf06de7c53c
 
---- Running Flow 2: Fact Checker ---
-👤 User Query: 'Is it true that OpenAI is partnering with Apple?'
-logfire: Instrument "Conversation Agent Running"
-logfire: Received user query: Is it true that OpenAI is partnering with Apple?
-logfire: Model decided to call a tool: fact_check_claim
-⚙️ Tool: Fact-checking claim: 'is openai partnering with apple?'
-logfire: Instrument "fact_check_claim tool called"
-✅ Agent Response:
-{
-  "status": "success",
-  "result": {
-    "verdict": "Unconfirmed, but widely rumored.",
-    "summary": "Multiple tech news outlets have reported on ongoing discussions between Apple and OpenAI to integrate generative AI features into iOS. However, neither company has issued an official confirmation. Sources suggest a deal is plausible but not finalized.",
-    "sources": [
-      "TechCrunch Report, Bloomberg News"
-    ]
-  }
-}
-logfire: Tool fact_check_claim executed successfully.
 
---- Running Flow 3: News Summarizer ---
-👤 User Query: 'Can you please summarize this for me: ...'
-logfire: Instrument "Conversation Agent Running"
-logfire: Received user query: Can you please summarize this for me: ...
-logfire: Model decided to call a tool: summarize_news
-⚙️ Tool: Summarizing article...
-logfire: Instrument "summarize_news tool called"
-✅ Agent Response:
-{
-  "status": "success",
-  "summary": [
-    "The article discusses the rapid advancements in Large Language Models (LLMs).",
-    "It highlights the competitive landscape between major tech companies.",
-    "Key challenges include managing computational costs and addressing ethical concerns.",
-    "The future outlook points towards more personalized and multi-modal AI assistants."
-  ]
-}
-logfire: Tool summarize_news executed successfully.
+Question: What’s trending in AI today?
+Output: 
+1: Advancements in Artificial Intelligence and Machine Learning
+
+Source: https://online-engineering.case.edu/blog/advancements-in-artificial-intelligence-and-machine-learning
+
+
+2: AI News & Articles - Artificial Intelligence Updates - IEEE Spectrum
+
+Source: https://spectrum.ieee.org/topic/artificial-intelligence/
+
+
+3: Latest Development of Artificial Intelligence | InData Labs
+
+Source: https://indatalabs.com/blog/ai-latest-developments
+
+
+4: Top AI Trends 2025: Key Developments to Watch - Appinventiv
+
+Source: https://appinventiv.com/blog/ai-trends/
+
+
+5: Top 24 Artificial Intelligence Applications and Uses - Simplilearn.com
+Source: https://www.simplilearn.com/tutorials/artificial-intelligence-tutorial/artificial-intelligence-applications
+
+Logfire log :
+https://logfire-us.pydantic.dev/shared-trace/afbd4ee5-245e-44c8-a781-ba02b6868333
+
+
+
+
+Question: Can you please summarize this for me: In a landmark development for the artificial intelligence industry, leading tech giants are now locked in a fierce competition to produce the most powerful and efficient Large Language Models (LLMs). This technological race is not just about bragging rights; it's about capturing a market expected to be worth trillions. The core of the battle lies in balancing immense computational power, which is costly and energy-intensive, with the growing demand for accessible and ethically-sound AI tools. Experts point out that while model performance is skyrocketing, significant hurdles remain in areas like bias mitigation, factual accuracy, and the high financial barrier to entry for smaller players. The industry's trajectory suggests a future dominated by a few key platforms, leading to a new era of personalized, multi-modal AI assistants that could redefine human-computer interaction.
+
+Output: 
+Major tech companies are competing to develop the most powerful and efficient Large Language Models (LLMs), aiming to dominate a market worth trillions. The challenge involves balancing high computational costs and energy use with the need for accessible, ethical AI. Despite rapid improvements, issues like bias, factual accuracy, and high costs limit smaller players. The industry is heading toward a landscape dominated by a few platforms, ushering in advanced, personalized AI assistants that could transform human-computer interactions.
+
+
+Logfire Log: https://logfire-us.pydantic.dev/shared-trace/395ba92f-ef3e-45e3-9659-9ee580b4a168

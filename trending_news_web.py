@@ -3,6 +3,7 @@ import os
 import json
 from typing import List
 from dotenv import load_dotenv
+import logfire
 from openai import AsyncOpenAI
 from agents import Agent, OpenAIChatCompletionsModel, Runner, function_tool, set_tracing_disabled,Runner
 from pydantic import BaseModel, Field
@@ -55,6 +56,7 @@ class TrendingNews(BaseModel):
 
 # To install: pip install tavily-python
 @function_tool
+@logfire.instrument("search_tavily tool called")
 def search_tavily(query: str) -> List[dict]:
     """Search Tavily for the given query and return results."""
     client = TavilyClient(TAVILY_API_KEY)
